@@ -17,6 +17,16 @@
         CGFloat characterSize = CGRectGetWidth(sceneSize) * 0.14f;
         self.size = CGSizeMake(characterSize, characterSize);
         self.scale = 0.6f;
+        
+        self.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:(characterSize * 0.4f)];
+        self.physicsBody.velocity = CGVectorMake(0.0f, 0.0f);
+        self.physicsBody.mass = 1.0f;
+        self.physicsBody.dynamic = YES;
+        self.physicsBody.affectedByGravity = NO;
+        self.physicsBody.linearDamping = 1.0f;
+//        self.physicsBody.categoryBitMask = kColliderTypeGift;
+//        self.physicsBody.collisionBitMask = kColliderTypeSkyscraperCollision | kColliderTypeGift;
+//        self.physicsBody.contactTestBitMask = kColliderTypeSkyscraper;
     }
     return self;
 }

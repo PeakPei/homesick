@@ -15,6 +15,9 @@
 
 #import "UIColor+HSAdditions.h"
 
+#define SK_DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) * 0.01745329252f) // PI / 180
+#define SK_RADIANS_TO_DEGREES(__ANGLE__) ((__ANGLE__) * 57.29577951f) // PI * 180
+
 @interface GameScene()
 
 @property (nonatomic, strong) SKAction *droneSoundPlay;
@@ -84,25 +87,43 @@
     }
     
     //
-    // Do actions
-    // TODO
-//    
-//    
-//    for (UITouch *touch in touches) {
-//        CGPoint location = [touch locationInNode:self];
-//        
-//        SKSpriteNode *sprite = [SKSpriteNode spriteNodeWithImageNamed:@"Spaceship"];
-//        
-//        sprite.xScale = 0.5;
-//        sprite.yScale = 0.5;
-//        sprite.position = location;
-//        
-//        SKAction *action = [SKAction rotateByAngle:M_PI duration:1];
-//        
-//        [sprite runAction:[SKAction repeatActionForever:action]];
-//        
-//        [self addChild:sprite];
-//    }
+    // Move the character based on the touch location
+    if (touches.count == 0) {
+        return;
+    }
+    
+    UITouch *touch = touches.allObjects.firstObject;
+    CGPoint touchLocation = [touch locationInNode:self];
+    
+    BOOL touchedLeftSide = touchLocation.x <= CGRectGetMidX(self.frame);
+    CGFloat sideTranslatedTouchLocation = 0.0f;
+    if (touchedLeftSide) {
+        sideTranslatedTouchLocation = (CGRectGetMidX(self.frame) - touchLocation.x) / CGRectGetMidX(self.frame);
+    }
+    else {
+        sideTranslatedTouchLocation = (touchLocation.x - CGRectGetMidX(self.frame)) / CGRectGetMidX(self.frame);
+    }
+    
+    CGFloat impulseVelocityFactor = MAX(0.2f, sideTranslatedTouchLocation);
+    CGFloat impulseVelocity = impulseVelocityFactor * 220.0f;
+    CGVector characterImpulseVector = CGVectorMake((touchedLeftSide) ? -impulseVelocity : impulseVelocity, 0.0f);
+    [self.characterNode.physicsBody applyImpulse:characterImpulseVector];
+    
+    //
+    // Rotate the character based on touch
+    CGPoint characterPosition = self.characterNode.position;
+    CGFloat opposite = characterPosition.y - touchLocation.y;
+    CGFloat adjacent = fabs(characterPosition.x - touchLocation.x);
+    CGFloat alphaAngle = atanf(opposite/adjacent);
+    CGFloat gemmaAngle = SK_DEGREES_TO_RADIANS(90.0f) - alphaAngle;
+    CGFloat rotationAngle = (touchedLeftSide) ? -gemmaAngle : gemmaAngle;
+    
+    [self.characterNode runAction:[SKAction rotateByAngle:rotationAngle duration:0.2f] completion:^{
+        SKAction *waitAction = [SKAction waitForDuration:0.1f];
+        SKAction *reverseRotateAction = [SKAction rotateByAngle:-rotationAngle duration:0.4f];
+        SKAction *sequence = [SKAction sequence:@[waitAction, reverseRotateAction]];
+        [self.characterNode runAction:sequence];
+    }];
 }
 
 
