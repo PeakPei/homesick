@@ -31,10 +31,8 @@
 @property (nonatomic, weak) HSMainCharacterNode *characterNode;
 
 @property (nonatomic) BOOL falling;
-
-@property (nonatomic, strong) SKAction *wait;
-
 @property (nonatomic) BOOL spawnGoTime;
+@property (nonatomic, strong) SKAction *waitForSpawnAction;
 
 @end
 
@@ -77,12 +75,8 @@
     [self addChild:characterNode];
     self.characterNode = characterNode;
     
-    self.wait = [SKAction waitForDuration:2.5];
+    self.waitForSpawnAction = [SKAction waitForDuration:3.0f];
     self.spawnGoTime = true;
-    
-    
-    
-    
 }
 
 
@@ -105,29 +99,11 @@
     
     UITouch *touch = touches.allObjects.firstObject;
     CGPoint touchLocation = [touch locationInNode:self];
-    
-    BOOL touchedLeftSide = touchLocation.x <= CGRectGetMidX(self.frame);
-    CGFloat sideTranslatedTouchLocation = 0.0f;
-    if (touchedLeftSide) {
-        sideTranslatedTouchLocation = (CGRectGetMidX(self.frame) - touchLocation.x) / CGRectGetMidX(self.frame);
-    }
-    else {
-        sideTranslatedTouchLocation = (touchLocation.x - CGRectGetMidX(self.frame)) / CGRectGetMidX(self.frame);
-    }
-    
-    CGFloat impulseVelocityFactor = MAX(0.2f, sideTranslatedTouchLocation);
-    CGFloat impulseVelocity = impulseVelocityFactor * 220.0f;
-    CGVector characterImpulseVector = CGVectorMake((touchedLeftSide) ? -impulseVelocity : impulseVelocity, 0.0f);
-    [self.characterNode.physicsBody applyImpulse:characterImpulseVector];
+    [self.characterNode.physicsBody applyImpulse:[self _characterImpulseVectorBasedOnTouchLocation:touchLocation]];
     
     //
     // Rotate the character based on touch
-    CGPoint characterPosition = self.characterNode.position;
-    CGFloat opposite = characterPosition.y - touchLocation.y;
-    CGFloat adjacent = fabs(characterPosition.x - touchLocation.x);
-    CGFloat alphaAngle = atanf(opposite/adjacent);
-    CGFloat gemmaAngle = SK_DEGREES_TO_RADIANS(90.0f) - alphaAngle;
-    CGFloat rotationAngle = (touchedLeftSide) ? -gemmaAngle : gemmaAngle;
+    CGFloat rotationAngle = [self _characterRotationAngleBasedOnTouchLocation:touchLocation andCharacterPosition:self.characterNode.position];
     
     [self.characterNode runAction:[SKAction rotateByAngle:rotationAngle duration:0.2f] completion:^{
         SKAction *waitAction = [SKAction waitForDuration:0.1f];
@@ -145,14 +121,12 @@
     if (self.spawnGoTime) {
         self.spawnGoTime = false;
         
-        self.wait.duration = 3;
-        //[node runAction:[SKAction sequence:@[wait, run]]];
         SKAction *spawnAction = [SKAction runBlock:^{
             [self _spawnMonster];
             self.spawnGoTime = true;
         }];
-        SKAction *spawnSequence = [SKAction sequence:@[self.wait, spawnAction]];
         
+        SKAction *spawnSequence = [SKAction sequence:@[self.waitForSpawnAction, spawnAction]];
         [self runAction:spawnSequence];
     }
 }
@@ -199,7 +173,39 @@
     SKAction * actionMove = [SKAction moveTo:CGPointMake(actualX, self.size.height + monster.size.height) duration:actualDuration];
     SKAction * actionMoveDone = [SKAction removeFromParent];
     [monster runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
+}
+
+
+- (CGVector)_characterImpulseVectorBasedOnTouchLocation:(CGPoint)touchLocation
+{
+    BOOL touchedLeftSide = touchLocation.x <= CGRectGetMidX(self.frame);
+    CGFloat sideTranslatedTouchLocation = 0.0f;
+    if (touchedLeftSide) {
+        sideTranslatedTouchLocation = (CGRectGetMidX(self.frame) - touchLocation.x) / CGRectGetMidX(self.frame);
+    }
+    else {
+        sideTranslatedTouchLocation = (touchLocation.x - CGRectGetMidX(self.frame)) / CGRectGetMidX(self.frame);
+    }
     
+    CGFloat impulseVelocityFactor = MAX(0.2f, sideTranslatedTouchLocation);
+    CGFloat impulseVelocity = impulseVelocityFactor * 220.0f;
+    CGVector characterImpulseVector = CGVectorMake((touchedLeftSide) ? -impulseVelocity : impulseVelocity, 0.0f);
+    
+    return characterImpulseVector;
+}
+
+
+- (CGFloat)_characterRotationAngleBasedOnTouchLocation:(CGPoint)touchLocation andCharacterPosition:(CGPoint)characterPosition
+{
+    BOOL touchedLeftSide = touchLocation.x <= CGRectGetMidX(self.frame);
+    
+    CGFloat opposite = characterPosition.y - touchLocation.y;
+    CGFloat adjacent = fabs(characterPosition.x - touchLocation.x);
+    CGFloat alphaAngle = atanf(opposite/adjacent);
+    CGFloat gemmaAngle = SK_DEGREES_TO_RADIANS(90.0f) - alphaAngle;
+    CGFloat rotationAngle = (touchedLeftSide) ? -gemmaAngle : gemmaAngle;
+    
+    return rotationAngle;
 }
 
 @end
