@@ -76,7 +76,7 @@
     self.characterNode = characterNode;
     
     self.waitForSpawnAction = [SKAction waitForDuration:3.0f];
-    self.spawnGoTime = true;
+    self.spawnGoTime = false;
 }
 
 
@@ -86,6 +86,7 @@
     // Start falling if not already
     if (!self.falling) {
         self.falling = YES;
+        self.spawnGoTime = true;
         
         [self _startFalling];
         return;
