@@ -75,8 +75,7 @@
     self.characterNode = characterNode;
     
     self.waitForSpawnAction = [SKAction waitForDuration:3.0f];
-    self.spawnGoTime = true;
-    
+
     //
     // Initialize array to hold monsters
     self.monsters = [[NSMutableArray alloc] init];
@@ -89,6 +88,7 @@
     // Start falling if not already
     if (!self.falling) {
         self.falling = YES;
+        self.spawnGoTime = true;
         
         [self _startFalling];
         return;
