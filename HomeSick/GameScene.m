@@ -22,13 +22,12 @@
 
 @property (nonatomic, strong) SKAction *droneSoundPlay;
 
-@property (nonatomic, weak) HSBackgroundNode *colorBackgroundNode;
 @property (nonatomic, strong) PBParallaxScrolling *parallaxBackgroundNode;
-
 @property (nonatomic, weak) HSPlanetNode *foreignPlanetNode;
 @property (nonatomic, weak) HSPlanetNode *homePlanetNode;
-
 @property (nonatomic, weak) HSMainCharacterNode *characterNode;
+
+@property (nonatomic, strong) NSMutableArray *monsters;
 
 @property (nonatomic) BOOL falling;
 @property (nonatomic) BOOL spawnGoTime;
@@ -77,6 +76,10 @@
     
     self.waitForSpawnAction = [SKAction waitForDuration:3.0f];
     self.spawnGoTime = true;
+    
+    //
+    // Initialize array to hold monsters
+    self.monsters = [[NSMutableArray alloc] init];
 }
 
 
@@ -116,19 +119,16 @@
 
 - (void)update:(CFTimeInterval)currentTime
 {
+    // Update parallax backgrounds
     [self.parallaxBackgroundNode update:currentTime];
     
-    if (self.spawnGoTime) {
-        self.spawnGoTime = false;
-        
-        SKAction *spawnAction = [SKAction runBlock:^{
-            [self _spawnMonster];
-            self.spawnGoTime = true;
-        }];
-        
-        SKAction *spawnSequence = [SKAction sequence:@[self.waitForSpawnAction, spawnAction]];
-        [self runAction:spawnSequence];
-    }
+    //
+    // Spawn monster if needed
+    [self _spawnMonsterIfNeeded];
+    
+    //
+    // Update monsters rotations
+    [self _updateMonstersRotations];
 }
 
 
@@ -147,10 +147,28 @@
     [self.characterNode prepareForFallingWithDescentByDistance:characterDescentDistance];
 }
 
+
+- (void)_spawnMonsterIfNeeded
+{
+    if (self.spawnGoTime) {
+        self.spawnGoTime = false;
+        
+        SKAction *spawnAction = [SKAction runBlock:^{
+            [self _spawnMonster];
+            self.spawnGoTime = true;
+        }];
+        
+        SKAction *spawnSequence = [SKAction sequence:@[self.waitForSpawnAction, spawnAction]];
+        [self runAction:spawnSequence];
+    }
+}
+
+
 - (void)_spawnMonster
 {
     // Create sprite
     SKSpriteNode * monster = [SKSpriteNode spriteNodeWithImageNamed:@"PurpleSquare"];
+    [self.monsters addObject:monster];
     
     // Determine where to spawn the monster along the X axis
     int minX = monster.size.height / 2;
@@ -171,8 +189,26 @@
     
     // Create the actions
     SKAction * actionMove = [SKAction moveTo:CGPointMake(actualX, self.size.height + monster.size.height) duration:actualDuration];
-    SKAction * actionMoveDone = [SKAction removeFromParent];
+    SKAction * actionMoveDone = [SKAction runBlock:^{
+        [monster removeFromParent];
+        [self.monsters removeObject:monster];
+    }];
+    
     [monster runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
+}
+
+
+- (void)_updateMonstersRotations
+{
+    for (SKSpriteNode *monster in self.monsters) {
+        //
+        // Calculate the angle for monster
+        CGFloat rotationAngle = [self _monsterRotationAngleBasedOnMonsterPosition:monster.position andCharacterPosition:self.characterNode.position];
+        
+        //
+        // Rotate the monster
+        monster.zRotation = rotationAngle;
+    }
 }
 
 
@@ -199,13 +235,30 @@
 {
     BOOL touchedLeftSide = touchLocation.x <= CGRectGetMidX(self.frame);
     
-    CGFloat opposite = characterPosition.y - touchLocation.y;
-    CGFloat adjacent = fabs(characterPosition.x - touchLocation.x);
-    CGFloat alphaAngle = atanf(opposite/adjacent);
-    CGFloat gemmaAngle = SK_DEGREES_TO_RADIANS(90.0f) - alphaAngle;
+    CGFloat gemmaAngle = [self _angleBetweenPositionA:characterPosition andPositionB:touchLocation];
     CGFloat rotationAngle = (touchedLeftSide) ? -gemmaAngle : gemmaAngle;
     
     return rotationAngle;
+}
+
+
+- (CGFloat)_monsterRotationAngleBasedOnMonsterPosition:(CGPoint)monsterPosition andCharacterPosition:(CGPoint)characterPosition
+{
+    BOOL monsterOnLeftSide = monsterPosition.x <= characterPosition.x;
+    
+    CGFloat gemmaAngle = [self _angleBetweenPositionA:characterPosition andPositionB:monsterPosition];
+    CGFloat rotationAngle = (monsterOnLeftSide) ? -gemmaAngle : gemmaAngle;
+    
+    return rotationAngle;
+}
+
+
+- (CGFloat)_angleBetweenPositionA:(CGPoint)positionA andPositionB:(CGPoint)positionB
+{
+    CGFloat opposite = positionA.y - positionB.y;
+    CGFloat adjacent = fabs(positionA.x - positionB.x);
+    CGFloat alphaAngle = atanf(opposite / adjacent);
+    return SK_DEGREES_TO_RADIANS(90.0f) - alphaAngle;
 }
 
 @end
