@@ -16,6 +16,7 @@
 
 @interface GameScene()
 
+@property (nonatomic, weak) HSBackgroundNode *colorBackgroundNode;
 @property (nonatomic, weak) HSBackgroundNode *backgroundNode;
 
 @property (nonatomic, weak) HSPlanetNode *foreignPlanetNode;
@@ -32,9 +33,19 @@
 - (void)didMoveToView:(SKView *)view
 {
     //
+    // Color background node
+    HSBackgroundNode *colorBackgroundNode = [HSBackgroundNode spriteNodeWithColor:[UIColor hs_colorFromHexString:@"0a2846"] size:self.frame.size];
+    colorBackgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    colorBackgroundNode.zPosition = 10;
+    [self addChild:colorBackgroundNode];
+    self.colorBackgroundNode = colorBackgroundNode;
+    
+    //
     // Add background node
-    HSBackgroundNode *backgroundNode = [HSBackgroundNode spriteNodeWithColor:[UIColor hs_colorFromHexString:@"0a2846"] size:self.frame.size];
+    HSBackgroundNode *backgroundNode = [HSBackgroundNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@"StarTile01"]];
+    backgroundNode.size = self.frame.size;
     backgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    backgroundNode.zPosition = 20;
     [self addChild:backgroundNode];
     self.backgroundNode = backgroundNode;
     
@@ -45,6 +56,7 @@
     foreignPlanetNode.fillColor = [UIColor hs_colorFromHexString:@"44484d"];
     foreignPlanetNode.strokeColor = [UIColor hs_colorFromHexString:@"5a5f66"];
     foreignPlanetNode.lineWidth = 4.0f;
+    foreignPlanetNode.zPosition = 30;
     [self addChild:foreignPlanetNode];
     self.foreignPlanetNode = foreignPlanetNode;
     
@@ -52,6 +64,7 @@
     // Create and add a main character node
     HSMainCharacterNode *characterNode = [[HSMainCharacterNode alloc] initWithSceneSize:self.frame];
     characterNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMinY(self.foreignPlanetNode.frame));
+    characterNode.zPosition = 40;
     [self addChild:characterNode];
     self.characterNode = characterNode;
 }
