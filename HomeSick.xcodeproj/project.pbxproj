@@ -16,6 +16,11 @@
 		26C2E3CB1B3EB120007A95D2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C2E3CA1B3EB120007A95D2 /* Images.xcassets */; };
 		26C2E3CE1B3EB120007A95D2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26C2E3CC1B3EB120007A95D2 /* LaunchScreen.xib */; };
 		26C2E3DA1B3EB120007A95D2 /* HomeSickTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3D91B3EB120007A95D2 /* HomeSickTests.m */; };
+		26C2E3F41B3EBF9B007A95D2 /* HSPlanetNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3F01B3EBF9B007A95D2 /* HSPlanetNode.m */; };
+		26C2E3F51B3EBF9B007A95D2 /* HSMainCharacterNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3F31B3EBF9B007A95D2 /* HSMainCharacterNode.m */; };
+		26C2E3F91B3EBFB6007A95D2 /* HSObstacleNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3F81B3EBFB6007A95D2 /* HSObstacleNode.m */; };
+		26C2E3FC1B3ECDBF007A95D2 /* HSBackgroundNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3FB1B3ECDBF007A95D2 /* HSBackgroundNode.m */; };
+		26C2E4001B3ECEAE007A95D2 /* UIColor+HSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3FF1B3ECEAD007A95D2 /* UIColor+HSAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +50,16 @@
 		26C2E3D31B3EB120007A95D2 /* HomeSickTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomeSickTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		26C2E3D81B3EB120007A95D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26C2E3D91B3EB120007A95D2 /* HomeSickTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeSickTests.m; sourceTree = "<group>"; };
+		26C2E3EF1B3EBF9B007A95D2 /* HSPlanetNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSPlanetNode.h; sourceTree = "<group>"; };
+		26C2E3F01B3EBF9B007A95D2 /* HSPlanetNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSPlanetNode.m; sourceTree = "<group>"; };
+		26C2E3F21B3EBF9B007A95D2 /* HSMainCharacterNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSMainCharacterNode.h; sourceTree = "<group>"; };
+		26C2E3F31B3EBF9B007A95D2 /* HSMainCharacterNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSMainCharacterNode.m; sourceTree = "<group>"; };
+		26C2E3F71B3EBFB6007A95D2 /* HSObstacleNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HSObstacleNode.h; path = Obstacles/HSObstacleNode.h; sourceTree = "<group>"; };
+		26C2E3F81B3EBFB6007A95D2 /* HSObstacleNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HSObstacleNode.m; path = Obstacles/HSObstacleNode.m; sourceTree = "<group>"; };
+		26C2E3FA1B3ECDBF007A95D2 /* HSBackgroundNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSBackgroundNode.h; sourceTree = "<group>"; };
+		26C2E3FB1B3ECDBF007A95D2 /* HSBackgroundNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSBackgroundNode.m; sourceTree = "<group>"; };
+		26C2E3FE1B3ECEAD007A95D2 /* UIColor+HSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+HSAdditions.h"; path = "Helpers/UIColor+HSAdditions.h"; sourceTree = "<group>"; };
+		26C2E3FF1B3ECEAD007A95D2 /* UIColor+HSAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+HSAdditions.m"; path = "Helpers/UIColor+HSAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +101,8 @@
 		26C2E3B71B3EB120007A95D2 /* HomeSick */ = {
 			isa = PBXGroup;
 			children = (
+				26C2E3FD1B3ECE50007A95D2 /* Helpers */,
+				26C2E3ED1B3EBF9B007A95D2 /* Nodes */,
 				26C2E3BC1B3EB120007A95D2 /* AppDelegate.h */,
 				26C2E3BD1B3EB120007A95D2 /* AppDelegate.m */,
 				26C2E3BF1B3EB120007A95D2 /* GameScene.h */,
@@ -125,6 +142,54 @@
 				26C2E3D81B3EB120007A95D2 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		26C2E3ED1B3EBF9B007A95D2 /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				26C2E3F61B3EBFA3007A95D2 /* Obstacles */,
+				26C2E3EE1B3EBF9B007A95D2 /* Environment */,
+				26C2E3F11B3EBF9B007A95D2 /* Main character */,
+			);
+			path = Nodes;
+			sourceTree = "<group>";
+		};
+		26C2E3EE1B3EBF9B007A95D2 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				26C2E3EF1B3EBF9B007A95D2 /* HSPlanetNode.h */,
+				26C2E3F01B3EBF9B007A95D2 /* HSPlanetNode.m */,
+				26C2E3FA1B3ECDBF007A95D2 /* HSBackgroundNode.h */,
+				26C2E3FB1B3ECDBF007A95D2 /* HSBackgroundNode.m */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
+		26C2E3F11B3EBF9B007A95D2 /* Main character */ = {
+			isa = PBXGroup;
+			children = (
+				26C2E3F21B3EBF9B007A95D2 /* HSMainCharacterNode.h */,
+				26C2E3F31B3EBF9B007A95D2 /* HSMainCharacterNode.m */,
+			);
+			path = "Main character";
+			sourceTree = "<group>";
+		};
+		26C2E3F61B3EBFA3007A95D2 /* Obstacles */ = {
+			isa = PBXGroup;
+			children = (
+				26C2E3F71B3EBFB6007A95D2 /* HSObstacleNode.h */,
+				26C2E3F81B3EBFB6007A95D2 /* HSObstacleNode.m */,
+			);
+			name = Obstacles;
+			sourceTree = "<group>";
+		};
+		26C2E3FD1B3ECE50007A95D2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				26C2E3FE1B3ECEAD007A95D2 /* UIColor+HSAdditions.h */,
+				26C2E3FF1B3ECEAD007A95D2 /* UIColor+HSAdditions.m */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,9 +293,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26C2E3F91B3EBFB6007A95D2 /* HSObstacleNode.m in Sources */,
+				26C2E4001B3ECEAE007A95D2 /* UIColor+HSAdditions.m in Sources */,
+				26C2E3F41B3EBF9B007A95D2 /* HSPlanetNode.m in Sources */,
+				26C2E3F51B3EBF9B007A95D2 /* HSMainCharacterNode.m in Sources */,
 				26C2E3C61B3EB120007A95D2 /* GameViewController.m in Sources */,
 				26C2E3BE1B3EB120007A95D2 /* AppDelegate.m in Sources */,
 				26C2E3C11B3EB120007A95D2 /* GameScene.m in Sources */,
+				26C2E3FC1B3ECDBF007A95D2 /* HSBackgroundNode.m in Sources */,
 				26C2E3BB1B3EB120007A95D2 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
