@@ -11,6 +11,7 @@
 #import "HSBackgroundNode.h"
 #import "HSPlanetNode.h"
 #import "HSMainCharacterNode.h"
+#import "PBParallaxScrolling.h"
 
 #import "UIColor+HSAdditions.h"
 
@@ -19,7 +20,7 @@
 @property (nonatomic, strong) SKAction *droneSoundPlay;
 
 @property (nonatomic, weak) HSBackgroundNode *colorBackgroundNode;
-@property (nonatomic, weak) HSBackgroundNode *backgroundNode;
+@property (nonatomic, strong) PBParallaxScrolling *parallaxBackgroundNode;
 
 @property (nonatomic, weak) HSPlanetNode *foreignPlanetNode;
 @property (nonatomic, weak) HSPlanetNode *homePlanetNode;
@@ -34,31 +35,25 @@
 
 - (void)didMoveToView:(SKView *)view
 {
+    self.backgroundColor = [UIColor hs_colorFromHexString:@"071d33"];
     //
     // Start drone
     self.droneSoundPlay = [SKAction playSoundFileNamed:@"Drone01.mp3" waitForCompletion:NO];
-    [self runAction: self.droneSoundPlay];
-    
-	//
-    // Color background node
-    HSBackgroundNode *colorBackgroundNode = [HSBackgroundNode spriteNodeWithColor:[UIColor hs_colorFromHexString:@"0a2846"] size:self.frame.size];
-    colorBackgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
-    colorBackgroundNode.zPosition = 10;
-    [self addChild:colorBackgroundNode];
-    self.colorBackgroundNode = colorBackgroundNode;
+    [self runAction:self.droneSoundPlay];
     
     //
-    // Add background node
-    HSBackgroundNode *backgroundNode = [HSBackgroundNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@"StarTile01"]];
-    backgroundNode.size = self.frame.size;
-    backgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
-    backgroundNode.zPosition = 20;
-    [self addChild:backgroundNode];
-    self.backgroundNode = backgroundNode;
+    // Add background paralax node
+    HSBackgroundNode *colorBackgroundNode = [HSBackgroundNode spriteNodeWithColor:[UIColor hs_colorFromHexString:@"071d33"] size:self.frame.size];
+    NSArray * imageNames = @[@"bg2", @"bg3", colorBackgroundNode];
+    PBParallaxScrolling *parallaxBackgroundNode = [[PBParallaxScrolling alloc] initWithBackgrounds:imageNames size:self.frame.size direction:kPBParallaxBackgroundDirectionUp fastestSpeed:3.0f andSpeedDecrease:kPBParallaxBackgroundDefaultSpeedDifferential];
+    parallaxBackgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    parallaxBackgroundNode.zPosition = 20;
+    [self addChild:parallaxBackgroundNode];
+    self.parallaxBackgroundNode = parallaxBackgroundNode;
     
     //
     // Create and add a foreign planet node
-    HSPlanetNode *foreignPlanetNode = [HSPlanetNode shapeNodeWithCircleOfRadius:(CGRectGetWidth(self.frame) * 0.2f)];
+    HSPlanetNode *foreignPlanetNode = [HSPlanetNode shapeNodeWithCircleOfRadius:(CGRectGetWidth(self.frame) * 0.4f)];
     foreignPlanetNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame) + (CGRectGetHeight(foreignPlanetNode.frame) * 0.22f));
     foreignPlanetNode.fillColor = [UIColor hs_colorFromHexString:@"44484d"];
     foreignPlanetNode.strokeColor = [UIColor hs_colorFromHexString:@"5a5f66"];
@@ -113,7 +108,7 @@
 
 - (void)update:(CFTimeInterval)currentTime
 {
-    
+    [self.parallaxBackgroundNode update:currentTime];
 }
 
 

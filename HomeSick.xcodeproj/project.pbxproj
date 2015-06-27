@@ -11,7 +11,6 @@
 		26C2E3BB1B3EB120007A95D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3BA1B3EB120007A95D2 /* main.m */; };
 		26C2E3BE1B3EB120007A95D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3BD1B3EB120007A95D2 /* AppDelegate.m */; };
 		26C2E3C11B3EB120007A95D2 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3C01B3EB120007A95D2 /* GameScene.m */; };
-		26C2E3C31B3EB120007A95D2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 26C2E3C21B3EB120007A95D2 /* GameScene.sks */; };
 		26C2E3C61B3EB120007A95D2 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3C51B3EB120007A95D2 /* GameViewController.m */; };
 		26C2E3C91B3EB120007A95D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26C2E3C71B3EB120007A95D2 /* Main.storyboard */; };
 		26C2E3CB1B3EB120007A95D2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26C2E3CA1B3EB120007A95D2 /* Images.xcassets */; };
@@ -22,6 +21,7 @@
 		26C2E3F91B3EBFB6007A95D2 /* HSObstacleNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3F81B3EBFB6007A95D2 /* HSObstacleNode.m */; };
 		26C2E3FC1B3ECDBF007A95D2 /* HSBackgroundNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3FB1B3ECDBF007A95D2 /* HSBackgroundNode.m */; };
 		26C2E4001B3ECEAE007A95D2 /* UIColor+HSAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3FF1B3ECEAD007A95D2 /* UIColor+HSAdditions.m */; };
+		26C2E4031B3EED95007A95D2 /* PBParallaxScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E4021B3EED95007A95D2 /* PBParallaxScrolling.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +43,6 @@
 		26C2E3BD1B3EB120007A95D2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		26C2E3BF1B3EB120007A95D2 /* GameScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
 		26C2E3C01B3EB120007A95D2 /* GameScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
-		26C2E3C21B3EB120007A95D2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		26C2E3C41B3EB120007A95D2 /* GameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
 		26C2E3C51B3EB120007A95D2 /* GameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
 		26C2E3C81B3EB120007A95D2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -62,6 +61,8 @@
 		26C2E3FB1B3ECDBF007A95D2 /* HSBackgroundNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSBackgroundNode.m; sourceTree = "<group>"; };
 		26C2E3FE1B3ECEAD007A95D2 /* UIColor+HSAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+HSAdditions.h"; path = "Helpers/UIColor+HSAdditions.h"; sourceTree = "<group>"; };
 		26C2E3FF1B3ECEAD007A95D2 /* UIColor+HSAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+HSAdditions.m"; path = "Helpers/UIColor+HSAdditions.m"; sourceTree = "<group>"; };
+		26C2E4011B3EED95007A95D2 /* PBParallaxScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PBParallaxScrolling.h; path = Helpers/PBParallaxScrolling.h; sourceTree = "<group>"; };
+		26C2E4021B3EED95007A95D2 /* PBParallaxScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PBParallaxScrolling.m; path = Helpers/PBParallaxScrolling.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +119,6 @@
 				26C2E3BD1B3EB120007A95D2 /* AppDelegate.m */,
 				26C2E3BF1B3EB120007A95D2 /* GameScene.h */,
 				26C2E3C01B3EB120007A95D2 /* GameScene.m */,
-				26C2E3C21B3EB120007A95D2 /* GameScene.sks */,
 				26C2E3C41B3EB120007A95D2 /* GameViewController.h */,
 				26C2E3C51B3EB120007A95D2 /* GameViewController.m */,
 				26C2E3C71B3EB120007A95D2 /* Main.storyboard */,
@@ -197,6 +197,8 @@
 		26C2E3FD1B3ECE50007A95D2 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				26C2E4011B3EED95007A95D2 /* PBParallaxScrolling.h */,
+				26C2E4021B3EED95007A95D2 /* PBParallaxScrolling.m */,
 				26C2E3FE1B3ECEAD007A95D2 /* UIColor+HSAdditions.h */,
 				26C2E3FF1B3ECEAD007A95D2 /* UIColor+HSAdditions.m */,
 			);
@@ -286,7 +288,6 @@
 				1CDADEF71B3EE1A900D032D1 /* Drone01.mp3 in Resources */,
 				26C2E3CE1B3EB120007A95D2 /* LaunchScreen.xib in Resources */,
 				26C2E3CB1B3EB120007A95D2 /* Images.xcassets in Resources */,
-				26C2E3C31B3EB120007A95D2 /* GameScene.sks in Resources */,
 				26C2E3C91B3EB120007A95D2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -313,6 +314,7 @@
 				26C2E3BE1B3EB120007A95D2 /* AppDelegate.m in Sources */,
 				26C2E3C11B3EB120007A95D2 /* GameScene.m in Sources */,
 				26C2E3FC1B3ECDBF007A95D2 /* HSBackgroundNode.m in Sources */,
+				26C2E4031B3EED95007A95D2 /* PBParallaxScrolling.m in Sources */,
 				26C2E3BB1B3EB120007A95D2 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
