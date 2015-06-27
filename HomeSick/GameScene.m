@@ -16,6 +16,8 @@
 
 @interface GameScene()
 
+@property (nonatomic, strong) SKAction *droneSoundPlay;
+
 @property (nonatomic, weak) HSBackgroundNode *colorBackgroundNode;
 @property (nonatomic, weak) HSBackgroundNode *backgroundNode;
 
@@ -33,6 +35,11 @@
 - (void)didMoveToView:(SKView *)view
 {
     //
+    // Start drone
+    self.droneSoundPlay = [SKAction playSoundFileNamed:@"Drone01.mp3" waitForCompletion:NO];
+    [self runAction: self.droneSoundPlay];
+    
+	//
     // Color background node
     HSBackgroundNode *colorBackgroundNode = [HSBackgroundNode spriteNodeWithColor:[UIColor hs_colorFromHexString:@"0a2846"] size:self.frame.size];
     colorBackgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
