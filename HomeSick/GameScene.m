@@ -32,6 +32,10 @@
 
 @property (nonatomic) BOOL falling;
 
+@property (nonatomic, strong) SKAction *wait;
+
+@property (nonatomic) BOOL spawnGoTime;
+
 @end
 
 @implementation GameScene
@@ -72,6 +76,13 @@
     characterNode.zPosition = 40;
     [self addChild:characterNode];
     self.characterNode = characterNode;
+    
+    self.wait = [SKAction waitForDuration:2.5];
+    self.spawnGoTime = true;
+    
+    
+    
+    
 }
 
 
@@ -130,6 +141,20 @@
 - (void)update:(CFTimeInterval)currentTime
 {
     [self.parallaxBackgroundNode update:currentTime];
+    
+    if (self.spawnGoTime) {
+        self.spawnGoTime = false;
+        
+        self.wait.duration = 3;
+        //[node runAction:[SKAction sequence:@[wait, run]]];
+        SKAction *spawnAction = [SKAction runBlock:^{
+            [self _spawnMonster];
+            self.spawnGoTime = true;
+        }];
+        SKAction *spawnSequence = [SKAction sequence:@[self.wait, spawnAction]];
+        
+        [self runAction:spawnSequence];
+    }
 }
 
 
@@ -146,6 +171,35 @@
     CGFloat characterCurrentVerticalPosition = self.characterNode.position.y;
     CGFloat characterDescentDistance = characterCurrentVerticalPosition - (CGRectGetHeight(self.frame) * 0.75f);
     [self.characterNode prepareForFallingWithDescentByDistance:characterDescentDistance];
+}
+
+- (void)_spawnMonster
+{
+    // Create sprite
+    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithImageNamed:@"PurpleSquare"];
+    
+    // Determine where to spawn the monster along the X axis
+    int minX = monster.size.height / 2;
+    int maxX = self.frame.size.width - monster.size.height / 2;
+    int rangeX = maxX - minX;
+    int actualX = (arc4random() % rangeX) + minX;
+    
+    // Create the monster slightly off-screen along the bottom edge,
+    // and along a random position along the X axis as calculated above
+    monster.position = CGPointMake(actualX, -monster.size.height);
+    [self addChild:monster];
+    
+    // Determine speed of the monster
+    int minDuration = 6.0;
+    int maxDuration = 10.0;
+    int rangeDuration = maxDuration - minDuration;
+    int actualDuration = (arc4random() % rangeDuration) + minDuration;
+    
+    // Create the actions
+    SKAction * actionMove = [SKAction moveTo:CGPointMake(actualX, self.size.height + monster.size.height) duration:actualDuration];
+    SKAction * actionMoveDone = [SKAction removeFromParent];
+    [monster runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
+    
 }
 
 @end

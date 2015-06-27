@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1CDADEF71B3EE1A900D032D1 /* Drone01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1CDADEF61B3EE1A900D032D1 /* Drone01.mp3 */; };
+		1CE6F38A1B3EEB5B002E2ADE /* Drone01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */; };
 		26C2E3BB1B3EB120007A95D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3BA1B3EB120007A95D2 /* main.m */; };
 		26C2E3BE1B3EB120007A95D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3BD1B3EB120007A95D2 /* AppDelegate.m */; };
 		26C2E3C11B3EB120007A95D2 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3C01B3EB120007A95D2 /* GameScene.m */; };
@@ -35,7 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1CDADEF61B3EE1A900D032D1 /* Drone01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Drone01.mp3; path = SoundFiles/Drone01.mp3; sourceTree = "<group>"; };
+		1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Drone01.mp3; sourceTree = "<group>"; };
 		26C2E3B51B3EB120007A95D2 /* HomeSick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeSick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26C2E3B91B3EB120007A95D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26C2E3BA1B3EB120007A95D2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		1CDADEF51B3EDB7100D032D1 /* SoundFiles */ = {
 			isa = PBXGroup;
 			children = (
-				1CDADEF61B3EE1A900D032D1 /* Drone01.mp3 */,
+				1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */,
 			);
 			name = SoundFiles;
 			sourceTree = "<group>";
@@ -285,7 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1CDADEF71B3EE1A900D032D1 /* Drone01.mp3 in Resources */,
+				1CE6F38A1B3EEB5B002E2ADE /* Drone01.mp3 in Resources */,
 				26C2E3CE1B3EB120007A95D2 /* LaunchScreen.xib in Resources */,
 				26C2E3CB1B3EB120007A95D2 /* Images.xcassets in Resources */,
 				26C2E3C91B3EB120007A95D2 /* Main.storyboard in Resources */,
