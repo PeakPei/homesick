@@ -8,7 +8,7 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface HSPlanetNode : SKShapeNode
+@interface HSPlanetNode : SKSpriteNode
 
 /**
  Moves the planet up by a given distance and duration

@@ -27,7 +27,7 @@ static inline CGFloat DegreesToRadians(CGFloat angle)
 //}
 
 
-static CGFloat const kDurationOfLevelInSeconds = 20.0f;
+static CGFloat const kDurationOfLevelInSeconds = 10.0f;
 
 @interface GameScene()
 
@@ -74,22 +74,18 @@ static CGFloat const kDurationOfLevelInSeconds = 20.0f;
     
     //
     // Create and add a foreign planet node
-    HSPlanetNode *foreignPlanetNode = [HSPlanetNode shapeNodeWithCircleOfRadius:(CGRectGetWidth(self.frame) * 0.4f)];
+    CGSize foreignPlanetSize = CGSizeMake(CGRectGetWidth(self.frame) * 1.2f, CGRectGetWidth(self.frame) * 1.2f);
+    HSPlanetNode *foreignPlanetNode = [HSPlanetNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@"foreignPlanet"] size:foreignPlanetSize];
     foreignPlanetNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame) + (CGRectGetHeight(foreignPlanetNode.frame) * 0.22f));
-    foreignPlanetNode.fillColor = [UIColor hs_colorFromHexString:@"44484d"];
-    foreignPlanetNode.strokeColor = [UIColor hs_colorFromHexString:@"5a5f66"];
-    foreignPlanetNode.lineWidth = 4.0f;
     foreignPlanetNode.zPosition = 30;
     [self addChild:foreignPlanetNode];
     self.foreignPlanetNode = foreignPlanetNode;
     
     //
     // Create and add a home planet node
-    HSPlanetNode *homePlanetNode = [HSPlanetNode shapeNodeWithCircleOfRadius:(CGRectGetWidth(self.frame) * 0.5f)];
+    CGSize homePlanetSize = CGSizeMake(CGRectGetWidth(self.frame) * 1.4f, CGRectGetWidth(self.frame) * 1.4f);
+    HSPlanetNode *homePlanetNode = [HSPlanetNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@"homePlanet"] size:homePlanetSize];
     homePlanetNode.position = CGPointMake(CGRectGetMidX(self.frame), -CGRectGetHeight(homePlanetNode.frame));
-    homePlanetNode.fillColor = [UIColor hs_colorFromHexString:@"45946e"];
-    homePlanetNode.strokeColor = [UIColor hs_colorFromHexString:@"62ad89"];
-    homePlanetNode.lineWidth = 4.0f;
     homePlanetNode.zPosition = 30;
     [self addChild:homePlanetNode];
     self.homePlanetNode = homePlanetNode;
@@ -97,7 +93,7 @@ static CGFloat const kDurationOfLevelInSeconds = 20.0f;
     //
     // Create and add a main character node
     HSMainCharacterNode *characterNode = [[HSMainCharacterNode alloc] initWithSceneSize:self.frame];
-    characterNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMinY(self.foreignPlanetNode.frame));
+    characterNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMinY(self.foreignPlanetNode.frame) + 30.0f);
     characterNode.zPosition = 40;
     [self addChild:characterNode];
     self.characterNode = characterNode;
@@ -187,12 +183,12 @@ static CGFloat const kDurationOfLevelInSeconds = 20.0f;
     self.spawnGoTime = NO;
     
     // Move foreign planet out from the scene by translating it upwards
-    [self.homePlanetNode moveUpByDistance:CGRectGetHeight(self.homePlanetNode.frame) duration:1.2f];
+    [self.homePlanetNode moveUpByDistance:(CGRectGetHeight(self.homePlanetNode.frame) * 0.8f) duration:1.2f];
     
     //
     // Descent main character to falling position
     CGFloat characterCurrentVerticalPosition = self.characterNode.position.y;
-    CGFloat characterDescentDistance = characterCurrentVerticalPosition - (CGRectGetHeight(self.frame) * 0.2f);
+    CGFloat characterDescentDistance = characterCurrentVerticalPosition - (CGRectGetHeight(self.frame) * 0.17f);
     [self.characterNode prepareForLandingWithDescentByDistance:characterDescentDistance];
     
     // Slow down the parallax background

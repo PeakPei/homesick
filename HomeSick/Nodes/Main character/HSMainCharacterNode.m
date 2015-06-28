@@ -38,7 +38,7 @@ static CGFloat const kFullScale = 1.0f;
         // Add tail node
         self.tailNode = [[SKSpriteNode alloc] initWithTexture:[SKTexture textureWithImageNamed:@"tail01"]];
         self.tailNode.alpha = 0.9f;
-        self.tailNode.size = CGSizeMake(headSize * 0.3f, headSize * 1.2f);
+        self.tailNode.size = CGSizeMake(headSize * 0.4f, headSize * 1.2f);
         self.tailNode.anchorPoint = CGPointMake(0.5f, 0.0f);
         self.tailNode.zPosition = 10;
         [self addChild:self.tailNode];
