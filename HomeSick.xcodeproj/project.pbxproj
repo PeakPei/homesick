@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1C52CBF41B3FF27C007F6567 /* AngrySquare.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 1C52CBF31B3FF27C007F6567 /* AngrySquare.atlas */; };
+		1C52CBF61B3FFCD3007F6567 /* Character.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 1C52CBF51B3FFCD3007F6567 /* Character.atlas */; };
 		1CE6F38A1B3EEB5B002E2ADE /* Drone01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */; };
 		26C2E3BB1B3EB120007A95D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3BA1B3EB120007A95D2 /* main.m */; };
 		26C2E3BE1B3EB120007A95D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3BD1B3EB120007A95D2 /* AppDelegate.m */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		1C52CBF31B3FF27C007F6567 /* AngrySquare.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = AngrySquare.atlas; sourceTree = "<group>"; };
+		1C52CBF51B3FFCD3007F6567 /* Character.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Character.atlas; sourceTree = "<group>"; };
 		1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Drone01.mp3; sourceTree = "<group>"; };
 		26C2E3B51B3EB120007A95D2 /* HomeSick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeSick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26C2E3B91B3EB120007A95D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		26C2E3B71B3EB120007A95D2 /* HomeSick */ = {
 			isa = PBXGroup;
 			children = (
+				1C52CBF51B3FFCD3007F6567 /* Character.atlas */,
 				1C52CBF31B3FF27C007F6567 /* AngrySquare.atlas */,
 				1CDADEF51B3EDB7100D032D1 /* SoundFiles */,
 				26C2E3FD1B3ECE50007A95D2 /* Helpers */,
@@ -291,6 +294,7 @@
 				1C52CBF41B3FF27C007F6567 /* AngrySquare.atlas in Resources */,
 				1CE6F38A1B3EEB5B002E2ADE /* Drone01.mp3 in Resources */,
 				26C2E3CE1B3EB120007A95D2 /* LaunchScreen.xib in Resources */,
+				1C52CBF61B3FFCD3007F6567 /* Character.atlas in Resources */,
 				26C2E3CB1B3EB120007A95D2 /* Images.xcassets in Resources */,
 				26C2E3C91B3EB120007A95D2 /* Main.storyboard in Resources */,
 			);

@@ -12,7 +12,7 @@
 
 - (instancetype)initWithSceneSize:(CGRect)sceneSize
 {
-    self = [super initWithTexture:[SKTexture textureWithImageNamed:@"main_character"]];
+    self = [super initWithTexture:[SKTexture textureWithImageNamed:@"character01"]];
     if (self) {
         CGFloat characterSize = CGRectGetWidth(sceneSize) * 0.14f;
         self.size = CGSizeMake(characterSize, characterSize);
