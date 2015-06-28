@@ -16,6 +16,8 @@
 
 #import "UIColor+HSAdditions.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 static inline CGFloat DegreesToRadians(CGFloat angle)
 {
     return angle * 0.01745329252f;
@@ -32,7 +34,8 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 
 @interface GameScene()
 
-@property (nonatomic, strong) SKAction *droneSoundPlay;
+@property (nonatomic, strong) AVAudioPlayer *startEndSoundtrackPlayer;
+@property (nonatomic, strong) AVAudioPlayer *playSoundtrackPlayer;
 
 @property (nonatomic, strong) PBParallaxScrolling *parallaxBackgroundNode;
 @property (nonatomic, weak) HSPlanetNode *foreignPlanetNode;
@@ -60,9 +63,13 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     self.backgroundColor = [UIColor hs_colorFromHexString:@"071d33"];
     
     //
-    // Start drone
-    self.droneSoundPlay = [SKAction playSoundFileNamed:@"Drone01.mp3" waitForCompletion:NO];
-    [self runAction:self.droneSoundPlay withKey:@"sound"];
+    // Create soundtrack players
+    NSURL *url1 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Drone01" ofType:@"mp3"]];
+    self.startEndSoundtrackPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url1 error:nil];
+    [self.startEndSoundtrackPlayer play];
+    
+    NSURL *url2 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Drone02" ofType:@"mp3"]];
+    self.playSoundtrackPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url2 error:nil];
     
     //
     // Add background paralax node
@@ -188,10 +195,9 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     [self.progressBarNode fadeIn];
     
     //
-    // Change sound
-    [self removeActionForKey:@"sound"];
-    self.droneSoundPlay = [SKAction playSoundFileNamed:@"Drone02.mp3" waitForCompletion:NO];
-    [self runAction:self.droneSoundPlay withKey:@"sound"];
+    // Change soundtrack
+    [self.startEndSoundtrackPlayer pause];
+    [self.playSoundtrackPlayer play];
 }
 
 
@@ -222,10 +228,9 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     [self.progressBarNode fadeOut];
     
     //
-    // Change sound
-    [self removeActionForKey:@"sound"];
-    self.droneSoundPlay = [SKAction playSoundFileNamed:@"Drone01.mp3" waitForCompletion:NO];
-    [self runAction:self.droneSoundPlay withKey:@"sound"];
+    // Change soundtrack
+    [self.startEndSoundtrackPlayer play];
+    [self.playSoundtrackPlayer stop];
 }
 
 
