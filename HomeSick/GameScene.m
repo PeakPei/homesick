@@ -135,13 +135,7 @@ static CGFloat const kDurationOfLevelInSeconds = 20.0f;
     //
     // Rotate the character based on touch
     CGFloat rotationAngle = [self _characterRotationAngleBasedOnTouchLocation:touchLocation andCharacterPosition:self.characterNode.position];
-    
-    [self.characterNode runAction:[SKAction rotateByAngle:rotationAngle duration:0.2f] completion:^{
-        SKAction *waitAction = [SKAction waitForDuration:0.1f];
-        SKAction *reverseRotateAction = [SKAction rotateByAngle:-rotationAngle duration:0.4f];
-        SKAction *sequence = [SKAction sequence:@[waitAction, reverseRotateAction]];
-        [self.characterNode runAction:sequence];
-    }];
+    [self.characterNode rotateByAngle:rotationAngle];
 }
 
 

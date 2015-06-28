@@ -13,5 +13,6 @@
 - (instancetype)initWithSceneSize:(CGRect)sceneSize;
 - (void)prepareForFallingWithDescentByDistance:(CGFloat)distance;
 - (void)prepareForLandingWithDescentByDistance:(CGFloat)distance;
+- (void)rotateByAngle:(CGFloat)angle;
 
 @end
