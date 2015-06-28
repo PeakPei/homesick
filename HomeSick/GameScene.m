@@ -27,7 +27,7 @@ static inline CGFloat DegreesToRadians(CGFloat angle)
 //}
 
 
-static CGFloat const kDurationOfLevelInSeconds = 10.0f;
+static CGFloat const kDurationOfLevelInSeconds = 20.0f;
 
 @interface GameScene()
 
