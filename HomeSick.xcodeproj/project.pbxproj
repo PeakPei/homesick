@@ -10,6 +10,7 @@
 		1C2489B71B402FAC00BB0357 /* Victory.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1C2489B61B402FAC00BB0357 /* Victory.mp3 */; };
 		1C52CBF41B3FF27C007F6567 /* AngrySquare.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 1C52CBF31B3FF27C007F6567 /* AngrySquare.atlas */; };
 		1C52CBF61B3FFCD3007F6567 /* Character.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 1C52CBF51B3FFCD3007F6567 /* Character.atlas */; };
+		1C9DEFF51B403131003A4EFC /* Crash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1C9DEFF41B403131003A4EFC /* Crash.mp3 */; };
 		1CE6F38A1B3EEB5B002E2ADE /* Drone01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */; };
 		2691C4521B4015CE0051ABED /* HSProgressBarNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2691C4511B4015CE0051ABED /* HSProgressBarNode.m */; };
 		2691C4541B4028EC0051ABED /* Drone02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2691C4531B4028EC0051ABED /* Drone02.mp3 */; };
@@ -43,6 +44,7 @@
 		1C2489B61B402FAC00BB0357 /* Victory.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Victory.mp3; path = SoundFiles/Victory.mp3; sourceTree = "<group>"; };
 		1C52CBF31B3FF27C007F6567 /* AngrySquare.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = AngrySquare.atlas; sourceTree = "<group>"; };
 		1C52CBF51B3FFCD3007F6567 /* Character.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Character.atlas; sourceTree = "<group>"; };
+		1C9DEFF41B403131003A4EFC /* Crash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = Crash.mp3; path = SoundFiles/Crash.mp3; sourceTree = "<group>"; };
 		1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Drone01.mp3; sourceTree = "<group>"; };
 		2691C4501B4015CE0051ABED /* HSProgressBarNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HSProgressBarNode.h; path = HUD/HSProgressBarNode.h; sourceTree = "<group>"; };
 		2691C4511B4015CE0051ABED /* HSProgressBarNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HSProgressBarNode.m; path = HUD/HSProgressBarNode.m; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 		1CDADEF51B3EDB7100D032D1 /* SoundFiles */ = {
 			isa = PBXGroup;
 			children = (
+				1C9DEFF41B403131003A4EFC /* Crash.mp3 */,
 				1C2489B61B402FAC00BB0357 /* Victory.mp3 */,
 				2691C4531B4028EC0051ABED /* Drone02.mp3 */,
 				1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */,
@@ -317,6 +320,7 @@
 				1C52CBF61B3FFCD3007F6567 /* Character.atlas in Resources */,
 				26C2E3CB1B3EB120007A95D2 /* Images.xcassets in Resources */,
 				2691C4541B4028EC0051ABED /* Drone02.mp3 in Resources */,
+				1C9DEFF51B403131003A4EFC /* Crash.mp3 in Resources */,
 				26C2E3C91B3EB120007A95D2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
