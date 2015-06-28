@@ -48,6 +48,7 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 @property (nonatomic, strong) SKAction *waitForSpawnAction;
 
 @property (nonatomic, strong) SKLabelNode *gameOverLabelNode;
+@property (nonatomic, strong) SKLabelNode *victoryLabelNode;
 @property (nonatomic, strong) UIButton *playAgainButton;
 
 @property (nonatomic) NSTimeInterval lastCheckTimeInterval;
@@ -80,11 +81,11 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     NSURL *url2 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Drone02" ofType:@"mp3"]];
     self.playSoundtrackPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url2 error:nil];
     
-//    NSURL *url3 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Crash" ofType:@"mp3"]];
-//    self.crashSoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url3 error:nil];
-//    
-//    NSURL *url4 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Victory" ofType:@"mp3"]];
-//    self.victorySoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url4 error:nil];
+    NSURL *url3 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Crash" ofType:@"mp3"]];
+    self.crashSoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url3 error:nil];
+    
+    NSURL *url4 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Victory" ofType:@"mp3"]];
+    self.victorySoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url4 error:nil];
 
     // Setup nodes
     [self _setupGlobalNodes];
@@ -157,6 +158,9 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 {
     //
     // Reset everything
+    self.totalTimePassed = 0;
+    self.lastCheckTimeInterval = 0;
+    self.lastUpdateTimeInterval = 0;
     self.gameOver = NO;
     self.landed = NO;
     self.falling = NO;
@@ -170,6 +174,7 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     [self.progressBarNode removeFromParent];
     
     [self.gameOverLabelNode removeFromParent];
+    [self.victoryLabelNode removeFromParent];
     [self.playAgainButton removeFromSuperview];
     [self.view setNeedsDisplay];
     
@@ -221,6 +226,9 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 
 - (void)_land
 {
+    // Mark game over
+    self.gameOver = YES;
+    
     // Mark landed
     self.landed = YES;
     
@@ -253,6 +261,8 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     // Change background soundtrack
     [self.startEndSoundtrackPlayer play];
     [self.playSoundtrackPlayer stop];
+    
+    [self _showVictoryAndPlayAgain];
 }
 
 
@@ -459,6 +469,25 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     self.gameOverLabelNode.fontSize = 60.0f;
     [self addChild:self.gameOverLabelNode];
     
+    [self _showPlayAgain];
+}
+
+
+- (void)_showVictoryAndPlayAgain
+{
+    
+    self.victoryLabelNode = [SKLabelNode labelNodeWithFontNamed:@"Marker Felt"];
+    self.victoryLabelNode.text = @"Victory!";
+    self.victoryLabelNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    self.victoryLabelNode.fontSize = 70.0f;
+    [self addChild:self.victoryLabelNode];
+    
+    [self _showPlayAgain];
+}
+
+
+- (void)_showPlayAgain
+{
     self.playAgainButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, CGRectGetMidY(self.frame), CGRectGetWidth(self.frame), 100.0f)];
     self.playAgainButton.titleLabel.font = [UIFont fontWithName:@"Marker Felt" size:40.0f];
     [self.playAgainButton setTitle:@"PLAY AGAIN" forState:UIControlStateNormal];
