@@ -166,8 +166,11 @@
 
 - (void)_spawnMonster
 {
+    // Instantiate Atlas
+    SKTextureAtlas *angrySquare = [SKTextureAtlas atlasNamed:@"AngrySquare"];
+    
     // Create sprite
-    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithImageNamed:@"PurpleSquare"];
+    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithTexture:[angrySquare textureNamed:@"01"]];
     [self.monsters addObject:monster];
     
     // Determine where to spawn the monster along the X axis
@@ -180,6 +183,7 @@
     // and along a random position along the X axis as calculated above
     monster.position = CGPointMake(actualX, -monster.size.height);
     [self addChild:monster];
+    
     
     // Determine speed of the monster
     int minDuration = 2.0;
