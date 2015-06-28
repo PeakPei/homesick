@@ -8,6 +8,8 @@
 
 #import "HSMainCharacterNode.h"
 
+#import "HSMasks.h"
+
 static CGFloat const kSmallScale = 0.6f;
 static CGFloat const kFullScale = 1.0f;
 
@@ -51,9 +53,9 @@ static CGFloat const kFullScale = 1.0f;
         self.physicsBody.dynamic = YES;
         self.physicsBody.affectedByGravity = NO;
         self.physicsBody.linearDamping = 1.0f;
-        //        self.physicsBody.categoryBitMask = kColliderTypeGift;
-        //        self.physicsBody.collisionBitMask = kColliderTypeSkyscraperCollision | kColliderTypeGift;
-        //        self.physicsBody.contactTestBitMask = kColliderTypeSkyscraper;
+        self.physicsBody.categoryBitMask = kColliderTypeCharacter;
+        self.physicsBody.collisionBitMask = 0;
+        self.physicsBody.contactTestBitMask = kColliderTypeMonster;
     }
     return self;
 }

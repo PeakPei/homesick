@@ -8,11 +8,11 @@
 
 #import "GameScene.h"
 
-#import "HSBackgroundNode.h"
 #import "HSPlanetNode.h"
 #import "HSMainCharacterNode.h"
 #import "PBParallaxScrolling.h"
 #import "HSProgressBarNode.h"
+#import "HSMasks.h"
 
 #import "UIColor+HSAdditions.h"
 
@@ -24,18 +24,14 @@ static inline CGFloat DegreesToRadians(CGFloat angle)
 }
 
 
-//static inline CGFloat RadiansToDegrees(CGFloat angle)
-//{
-//    return angle * 57.29577951f;
-//}
-
-
 static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 
-@interface GameScene()
+@interface GameScene() <SKPhysicsContactDelegate>
 
 @property (nonatomic, strong) AVAudioPlayer *startEndSoundtrackPlayer;
 @property (nonatomic, strong) AVAudioPlayer *playSoundtrackPlayer;
+@property (nonatomic, strong) AVAudioPlayer *victorySoundPlayer;
+@property (nonatomic, strong) AVAudioPlayer *crashSoundPlayer;
 
 @property (nonatomic, strong) PBParallaxScrolling *parallaxBackgroundNode;
 @property (nonatomic, weak) HSPlanetNode *foreignPlanetNode;
@@ -45,10 +41,14 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 
 @property (nonatomic, strong) NSMutableArray *monsters;
 
+@property (nonatomic) BOOL gameOver;
 @property (nonatomic) BOOL falling;
 @property (nonatomic) BOOL landed;
 @property (nonatomic) BOOL spawnGoTime;
 @property (nonatomic, strong) SKAction *waitForSpawnAction;
+
+@property (nonatomic, strong) SKLabelNode *gameOverLabelNode;
+@property (nonatomic, strong) UIButton *playAgainButton;
 
 @property (nonatomic) NSTimeInterval lastCheckTimeInterval;
 @property (nonatomic) NSTimeInterval lastUpdateTimeInterval;
@@ -57,6 +57,15 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 @end
 
 @implementation GameScene
+
+- (id)initWithSize:(CGSize)size
+{
+    if (self = [super initWithSize:size]) {
+        self.physicsWorld.contactDelegate = self;
+    }
+    return self;
+}
+
 
 - (void)didMoveToView:(SKView *)view
 {
@@ -71,62 +80,29 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     NSURL *url2 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Drone02" ofType:@"mp3"]];
     self.playSoundtrackPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url2 error:nil];
     
-    //
-    // Add background paralax node
-    HSBackgroundNode *colorBackgroundNode = [HSBackgroundNode spriteNodeWithColor:[UIColor hs_colorFromHexString:@"182833"] size:self.frame.size];
-    NSArray * imageNames = @[@"bg2", @"bg3", colorBackgroundNode];
-    PBParallaxScrolling *parallaxBackgroundNode = [[PBParallaxScrolling alloc] initWithBackgrounds:imageNames size:self.frame.size direction:kPBParallaxBackgroundDirectionUp fastestSpeed:3.0f andSpeedDecrease:kPBParallaxBackgroundDefaultSpeedDifferential];
-    parallaxBackgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
-    parallaxBackgroundNode.zPosition = 20;
-    [self addChild:parallaxBackgroundNode];
-    self.parallaxBackgroundNode = parallaxBackgroundNode;
-    [self.parallaxBackgroundNode changeSpeedsByFactor:0.3f];
-    
-    //
-    // Create and add a foreign planet node
-    CGSize foreignPlanetSize = CGSizeMake(CGRectGetWidth(self.frame) * 1.2f, CGRectGetWidth(self.frame) * 1.2f);
-    HSPlanetNode *foreignPlanetNode = [HSPlanetNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@"foreignPlanet"] size:foreignPlanetSize];
-    foreignPlanetNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame) + (CGRectGetHeight(foreignPlanetNode.frame) * 0.22f));
-    foreignPlanetNode.zPosition = 30;
-    [self addChild:foreignPlanetNode];
-    self.foreignPlanetNode = foreignPlanetNode;
-    
-    //
-    // Create and add a home planet node
-    CGSize homePlanetSize = CGSizeMake(CGRectGetWidth(self.frame) * 1.4f, CGRectGetWidth(self.frame) * 1.4f);
-    HSPlanetNode *homePlanetNode = [HSPlanetNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@"homePlanet"] size:homePlanetSize];
-    homePlanetNode.position = CGPointMake(CGRectGetMidX(self.frame), -CGRectGetHeight(homePlanetNode.frame));
-    homePlanetNode.zPosition = 30;
-    [self addChild:homePlanetNode];
-    self.homePlanetNode = homePlanetNode;
-    
-    //
-    // Create and add a main character node
-    HSMainCharacterNode *characterNode = [[HSMainCharacterNode alloc] initWithSceneSize:self.frame];
-    characterNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMinY(self.foreignPlanetNode.frame) + 30.0f);
-    characterNode.zPosition = 40;
-    [self addChild:characterNode];
-    self.characterNode = characterNode;
-    
-    self.waitForSpawnAction = [SKAction waitForDuration:1.0f];
+//    NSURL *url3 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Crash" ofType:@"mp3"]];
+//    self.crashSoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url3 error:nil];
+//    
+//    NSURL *url4 = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Victory" ofType:@"mp3"]];
+//    self.victorySoundPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url4 error:nil];
 
-    //
+    // Setup nodes
+    [self _setupGlobalNodes];
+    
     // Initialize an array to hold monsters
     self.monsters = [[NSMutableArray alloc] init];
     
-    //
-    // Create and add progress bar node
-    HSProgressBarNode *progressBarNode = [[HSProgressBarNode alloc] initWithColor:UIColor.clearColor size:CGSizeMake(CGRectGetWidth(self.frame) * 0.07f, CGRectGetHeight(self.frame) - 20.0f)];
-    progressBarNode.anchorPoint = CGPointMake(0.0f, 0.5f);
-    progressBarNode.position = CGPointMake(10.0f, CGRectGetMidY(self.frame));
-    progressBarNode.alpha = 0.0f;
-    [self addChild:progressBarNode];
-    self.progressBarNode = progressBarNode;
+    // Setup wait for spawn monsters action
+    self.waitForSpawnAction = [SKAction waitForDuration:0.5f];
 }
 
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (self.gameOver) {
+        return;
+    }
+    
     //
     // Start falling if not already
     if (!self.falling && !self.landed) {
@@ -172,6 +148,48 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     
     // Update parallax backgrounds
     [self.parallaxBackgroundNode update:currentTime];
+}
+
+
+#pragma mark - Actions
+
+- (void)playAgainButtonTouched:(UIButton *)button
+{
+    //
+    // Reset everything
+    self.gameOver = NO;
+    self.landed = NO;
+    self.falling = NO;
+    self.spawnGoTime = NO;
+    
+    [self.parallaxBackgroundNode removeFromParent];
+    [self.characterNode removeFromParent];
+    
+    [self.foreignPlanetNode removeFromParent];
+    [self.homePlanetNode removeFromParent];
+    [self.progressBarNode removeFromParent];
+    
+    [self.gameOverLabelNode removeFromParent];
+    [self.playAgainButton removeFromSuperview];
+    [self.view setNeedsDisplay];
+    
+    [self _setupGlobalNodes];
+}
+
+
+#pragma mark - Physic
+
+- (void)didBeginContact:(SKPhysicsContact *)contact
+{
+    SKPhysicsBody *bodyA = contact.bodyA;
+    SKPhysicsBody *bodyB = contact.bodyB;
+    
+    // If the categories of physics bodies are different then the character has hit one of the monsters
+    if (bodyA.categoryBitMask != bodyB.categoryBitMask) {
+        if (!self.gameOver) {
+            [self _gameOver];
+        }
+    }
 }
 
 
@@ -228,7 +246,43 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     [self.progressBarNode fadeOut];
     
     //
-    // Change soundtrack
+    // Play victory soundtrack
+    [self.victorySoundPlayer play];
+    
+    //
+    // Change background soundtrack
+    [self.startEndSoundtrackPlayer play];
+    [self.playSoundtrackPlayer stop];
+}
+
+
+- (void)_gameOver
+{
+    // Mark game over
+    self.gameOver = YES;
+    
+    // Mark landed
+    self.landed = NO;
+    
+    // Stop falling
+    self.falling = NO;
+    
+    // Stop spawning monsters
+    self.spawnGoTime = NO;
+    
+    //
+    // Show the game over stuff
+    [self _showGameOverAndPlayAgain];
+    
+    // Slow down the parallax background
+    [self.parallaxBackgroundNode changeSpeedsByFactor:0.1f];
+    
+    //
+    // Play crash sountrack
+    [self.crashSoundPlayer play];
+    
+    //
+    // Change background soundtrack
     [self.startEndSoundtrackPlayer play];
     [self.playSoundtrackPlayer stop];
 }
@@ -254,29 +308,43 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 {
     // Instantiate Atlas
     SKTextureAtlas *angrySquare = [SKTextureAtlas atlasNamed:@"AngrySquare"];
+    SKTexture *monsterTexture = [angrySquare textureNamed:@"01"];
     
+    //
     // Create sprite
-    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithTexture:[angrySquare textureNamed:@"01"]];
+    SKSpriteNode * monster = [SKSpriteNode spriteNodeWithTexture:monsterTexture];
+    monster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:monsterTexture.size];
+    monster.physicsBody.velocity = CGVectorMake(0.0f, 0.0f);
+    monster.physicsBody.mass = 1.0f;
+    monster.physicsBody.dynamic = YES;
+    monster.physicsBody.affectedByGravity = NO;
+    monster.physicsBody.linearDamping = 1.0f;
+    monster.physicsBody.categoryBitMask = kColliderTypeMonster;
+    monster.physicsBody.collisionBitMask = 0;
+    monster.physicsBody.contactTestBitMask = kColliderTypeCharacter;
     [self.monsters addObject:monster];
     
+    //
     // Determine where to spawn the monster along the X axis
     int minX = monster.size.height / 2;
     int maxX = self.frame.size.width - monster.size.height / 2;
     int rangeX = maxX - minX;
     int actualX = (arc4random() % rangeX) + minX;
     
+    //
     // Create the monster slightly off-screen along the bottom edge,
     // and along a random position along the X axis as calculated above
     monster.position = CGPointMake(actualX, -monster.size.height);
     [self addChild:monster];
     
-    
+    //
     // Determine speed of the monster
     int minDuration = 2.0;
     int maxDuration = 4.0;
     int rangeDuration = maxDuration - minDuration;
     int actualDuration = (arc4random() % rangeDuration) + minDuration;
     
+    //
     // Create the actions
     SKAction * actionMove = [SKAction moveTo:CGPointMake(actualX, self.size.height + monster.size.height) duration:actualDuration];
     SKAction * actionMoveDone = [SKAction runBlock:^{
@@ -284,6 +352,7 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
         [self.monsters removeObject:monster];
     }];
     
+    // Run action
     [monster runAction:[SKAction sequence:@[actionMove, actionMoveDone]]];
 }
 
@@ -379,6 +448,72 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     if (self.totalTimePassed > kDurationOfLevelInSeconds) {
         [self _land];
     }
+}
+
+
+- (void)_showGameOverAndPlayAgain
+{
+    self.gameOverLabelNode = [SKLabelNode labelNodeWithFontNamed:@"Marker Felt"];
+    self.gameOverLabelNode.text = @"Game Over!";
+    self.gameOverLabelNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    self.gameOverLabelNode.fontSize = 60.0f;
+    [self addChild:self.gameOverLabelNode];
+    
+    self.playAgainButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, CGRectGetMidY(self.frame), CGRectGetWidth(self.frame), 100.0f)];
+    self.playAgainButton.titleLabel.font = [UIFont fontWithName:@"Marker Felt" size:40.0f];
+    [self.playAgainButton setTitle:@"PLAY AGAIN" forState:UIControlStateNormal];
+    [self.playAgainButton addTarget:self action:@selector(playAgainButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.playAgainButton];
+}
+
+
+- (void)_setupGlobalNodes
+{
+    //
+    // Add background paralax node
+    SKSpriteNode *colorBackgroundNode = [SKSpriteNode spriteNodeWithColor:[UIColor hs_colorFromHexString:@"182833"] size:self.frame.size];
+    NSArray * imageNames = @[@"bg2", @"bg3", colorBackgroundNode];
+    PBParallaxScrolling *parallaxBackgroundNode = [[PBParallaxScrolling alloc] initWithBackgrounds:imageNames size:self.frame.size direction:kPBParallaxBackgroundDirectionUp fastestSpeed:3.0f andSpeedDecrease:kPBParallaxBackgroundDefaultSpeedDifferential];
+    parallaxBackgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    parallaxBackgroundNode.zPosition = 20;
+    [self addChild:parallaxBackgroundNode];
+    self.parallaxBackgroundNode = parallaxBackgroundNode;
+    [self.parallaxBackgroundNode changeSpeedsByFactor:0.3f];
+    
+    //
+    // Create and add a foreign planet node
+    CGSize foreignPlanetSize = CGSizeMake(CGRectGetWidth(self.frame) * 1.2f, CGRectGetWidth(self.frame) * 1.2f);
+    HSPlanetNode *foreignPlanetNode = [HSPlanetNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@"foreignPlanet"] size:foreignPlanetSize];
+    foreignPlanetNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame) + (CGRectGetHeight(foreignPlanetNode.frame) * 0.22f));
+    foreignPlanetNode.zPosition = 30;
+    [self addChild:foreignPlanetNode];
+    self.foreignPlanetNode = foreignPlanetNode;
+    
+    //
+    // Create and add a home planet node
+    CGSize homePlanetSize = CGSizeMake(CGRectGetWidth(self.frame) * 1.4f, CGRectGetWidth(self.frame) * 1.4f);
+    HSPlanetNode *homePlanetNode = [HSPlanetNode spriteNodeWithTexture:[SKTexture textureWithImageNamed:@"homePlanet"] size:homePlanetSize];
+    homePlanetNode.position = CGPointMake(CGRectGetMidX(self.frame), -CGRectGetHeight(homePlanetNode.frame));
+    homePlanetNode.zPosition = 30;
+    [self addChild:homePlanetNode];
+    self.homePlanetNode = homePlanetNode;
+    
+    //
+    // Create and add a main character node
+    HSMainCharacterNode *characterNode = [[HSMainCharacterNode alloc] initWithSceneSize:self.frame];
+    characterNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMinY(self.foreignPlanetNode.frame) + 30.0f);
+    characterNode.zPosition = 40;
+    [self addChild:characterNode];
+    self.characterNode = characterNode;
+    
+    //
+    // Create and add progress bar node
+    HSProgressBarNode *progressBarNode = [[HSProgressBarNode alloc] initWithColor:UIColor.clearColor size:CGSizeMake(CGRectGetWidth(self.frame) * 0.07f, CGRectGetHeight(self.frame) - 20.0f)];
+    progressBarNode.anchorPoint = CGPointMake(0.0f, 0.5f);
+    progressBarNode.position = CGPointMake(10.0f, CGRectGetMidY(self.frame));
+    progressBarNode.alpha = 0.0f;
+    [self addChild:progressBarNode];
+    self.progressBarNode = progressBarNode;
 }
 
 @end
