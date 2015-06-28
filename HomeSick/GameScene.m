@@ -108,7 +108,7 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     
     //
     // Create and add progress bar node
-    HSProgressBarNode *progressBarNode = [[HSProgressBarNode alloc] initWithColor:UIColor.clearColor size:CGSizeMake(CGRectGetWidth(self.frame) * 0.08f, CGRectGetHeight(self.frame) - 20.0f)];
+    HSProgressBarNode *progressBarNode = [[HSProgressBarNode alloc] initWithColor:UIColor.clearColor size:CGSizeMake(CGRectGetWidth(self.frame) * 0.07f, CGRectGetHeight(self.frame) - 20.0f)];
     progressBarNode.anchorPoint = CGPointMake(0.0f, 0.5f);
     progressBarNode.position = CGPointMake(10.0f, CGRectGetMidY(self.frame));
     progressBarNode.alpha = 0.0f;

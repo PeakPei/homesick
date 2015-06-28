@@ -50,7 +50,7 @@
 
 - (void)fadeIn
 {
-    SKAction *fadeInAction = [SKAction fadeAlphaTo:0.6f duration:3.0f];
+    SKAction *fadeInAction = [SKAction fadeAlphaTo:0.5f duration:3.0f];
     [self runAction:fadeInAction];
 }
 
