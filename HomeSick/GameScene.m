@@ -58,10 +58,11 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 - (void)didMoveToView:(SKView *)view
 {
     self.backgroundColor = [UIColor hs_colorFromHexString:@"071d33"];
+    
     //
     // Start drone
     self.droneSoundPlay = [SKAction playSoundFileNamed:@"Drone01.mp3" waitForCompletion:NO];
-    [self runAction:self.droneSoundPlay];
+    [self runAction:self.droneSoundPlay withKey:@"sound"];
     
     //
     // Add background paralax node
@@ -185,6 +186,12 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     
     // Fade in progress bar
     [self.progressBarNode fadeIn];
+    
+    //
+    // Change sound
+    [self removeActionForKey:@"sound"];
+    self.droneSoundPlay = [SKAction playSoundFileNamed:@"Drone02.mp3" waitForCompletion:NO];
+    [self runAction:self.droneSoundPlay withKey:@"sound"];
 }
 
 
@@ -213,6 +220,12 @@ static CGFloat const kDurationOfLevelInSeconds = 30.0f;
     
     // Fade out progress bar
     [self.progressBarNode fadeOut];
+    
+    //
+    // Change sound
+    [self removeActionForKey:@"sound"];
+    self.droneSoundPlay = [SKAction playSoundFileNamed:@"Drone01.mp3" waitForCompletion:NO];
+    [self runAction:self.droneSoundPlay withKey:@"sound"];
 }
 
 
