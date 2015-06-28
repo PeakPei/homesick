@@ -74,7 +74,7 @@
     [self addChild:characterNode];
     self.characterNode = characterNode;
     
-    self.waitForSpawnAction = [SKAction waitForDuration:3.0f];
+    self.waitForSpawnAction = [SKAction waitForDuration:0.8f];
 
     //
     // Initialize array to hold monsters
@@ -182,8 +182,8 @@
     [self addChild:monster];
     
     // Determine speed of the monster
-    int minDuration = 6.0;
-    int maxDuration = 10.0;
+    int minDuration = 2.0;
+    int maxDuration = 4.0;
     int rangeDuration = maxDuration - minDuration;
     int actualDuration = (arc4random() % rangeDuration) + minDuration;
     
