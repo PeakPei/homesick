@@ -26,8 +26,8 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-#define kPBParallaxBackgroundDefaultSpeedDifferential   0.90
-#define kPBParallaxBackgroundDefaultSpeed 2
+#define kPBParallaxBackgroundDefaultSpeedDifferential   0.6
+#define kPBParallaxBackgroundDefaultSpeed 1.6f
 
 typedef enum {
     kPBParallaxBackgroundDirectionUp = 0,
@@ -49,6 +49,9 @@ typedef enum {
 
 /** This method, called once in every game loop, will adjust the relative position of the nodes in the parallax background set */
 - (void) update: (NSTimeInterval) currentTime;
+
+/** Updates speeds by a given factor */
+- (void)changeSpeedsByFactor:(CGFloat)factor;
 
 /** reverse the direction of the movement, left->right, right->left, up->down, down->up */
 - (void) reverseMovementDirection;

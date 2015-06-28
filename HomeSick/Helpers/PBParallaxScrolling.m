@@ -187,6 +187,23 @@ static inline CGFloat roundFloatToTwoDecimalPlaces(CGFloat num) { return floorf(
     }
 }
 
+
+- (void)changeSpeedsByFactor:(CGFloat)factor
+{
+    if (factor < 0) {
+        return;
+    }
+    
+    NSMutableArray *newSpeeds = [[NSMutableArray alloc] initWithCapacity:self.speeds.count];
+    
+    for (NSNumber *speed in self.speeds) {
+        [newSpeeds addObject:@(speed.floatValue * factor)];
+    }
+    
+    self.speeds = newSpeeds;
+}
+
+
 - (void) reverseMovementDirection {
     PBParallaxBackgroundDirection newDirection = self.direction;
     switch (self.direction) {

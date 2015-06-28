@@ -8,6 +8,9 @@
 
 #import "HSMainCharacterNode.h"
 
+static CGFloat const kSmallScale = 0.6f;
+static CGFloat const kFullScale = 1.0f;
+
 @implementation HSMainCharacterNode
 
 - (instancetype)initWithSceneSize:(CGRect)sceneSize
@@ -16,7 +19,7 @@
     if (self) {
         CGFloat characterSize = CGRectGetWidth(sceneSize) * 0.14f;
         self.size = CGSizeMake(characterSize, characterSize);
-        self.scale = 0.6f;
+        self.scale = kSmallScale;
         
         self.physicsBody = [SKPhysicsBody bodyWithCircleOfRadius:(characterSize * 0.4f)];
         self.physicsBody.velocity = CGVectorMake(0.0f, 0.0f);
@@ -38,7 +41,19 @@
     descentAction.timingMode = SKActionTimingEaseIn;
     [self runAction:descentAction];
     
-    SKAction *scaleAction = [SKAction scaleTo:1.0f duration:2.0f];
+    SKAction *scaleAction = [SKAction scaleTo:kFullScale duration:2.0f];
+    scaleAction.timingMode = SKActionTimingEaseIn;
+    [self runAction:scaleAction];
+}
+
+
+- (void)prepareForLandingWithDescentByDistance:(CGFloat)distance
+{
+    SKAction *descentAction = [SKAction moveByX:0.0 y:-distance duration:1.8f];
+    descentAction.timingMode = SKActionTimingEaseInEaseOut;
+    [self runAction:descentAction];
+    
+    SKAction *scaleAction = [SKAction scaleTo:kSmallScale duration:1.8f];
     scaleAction.timingMode = SKActionTimingEaseOut;
     [self runAction:scaleAction];
 }

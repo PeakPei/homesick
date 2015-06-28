@@ -15,8 +15,19 @@
 
 #import "UIColor+HSAdditions.h"
 
-#define SK_DEGREES_TO_RADIANS(__ANGLE__) ((__ANGLE__) * 0.01745329252f) // PI / 180
-#define SK_RADIANS_TO_DEGREES(__ANGLE__) ((__ANGLE__) * 57.29577951f) // PI * 180
+static inline CGFloat DegreesToRadians(CGFloat angle)
+{
+    return angle * 0.01745329252f;
+}
+
+
+//static inline CGFloat RadiansToDegrees(CGFloat angle)
+//{
+//    return angle * 57.29577951f;
+//}
+
+
+static CGFloat const kDurationOfLevelInSeconds = 10.0f;
 
 @interface GameScene()
 
@@ -30,8 +41,13 @@
 @property (nonatomic, strong) NSMutableArray *monsters;
 
 @property (nonatomic) BOOL falling;
+@property (nonatomic) BOOL landed;
 @property (nonatomic) BOOL spawnGoTime;
 @property (nonatomic, strong) SKAction *waitForSpawnAction;
+
+@property (nonatomic) NSTimeInterval lastCheckTimeInterval;
+@property (nonatomic) NSTimeInterval lastUpdateTimeInterval;
+@property (nonatomic) NSTimeInterval totalTimePassed;
 
 @end
 
@@ -54,6 +70,7 @@
     parallaxBackgroundNode.zPosition = 20;
     [self addChild:parallaxBackgroundNode];
     self.parallaxBackgroundNode = parallaxBackgroundNode;
+    [self.parallaxBackgroundNode changeSpeedsByFactor:0.3f];
     
     //
     // Create and add a foreign planet node
@@ -65,6 +82,17 @@
     foreignPlanetNode.zPosition = 30;
     [self addChild:foreignPlanetNode];
     self.foreignPlanetNode = foreignPlanetNode;
+    
+    //
+    // Create and add a home planet node
+    HSPlanetNode *homePlanetNode = [HSPlanetNode shapeNodeWithCircleOfRadius:(CGRectGetWidth(self.frame) * 0.5f)];
+    homePlanetNode.position = CGPointMake(CGRectGetMidX(self.frame), -CGRectGetHeight(homePlanetNode.frame));
+    homePlanetNode.fillColor = [UIColor hs_colorFromHexString:@"45946e"];
+    homePlanetNode.strokeColor = [UIColor hs_colorFromHexString:@"62ad89"];
+    homePlanetNode.lineWidth = 4.0f;
+    homePlanetNode.zPosition = 30;
+    [self addChild:homePlanetNode];
+    self.homePlanetNode = homePlanetNode;
     
     //
     // Create and add a main character node
@@ -86,7 +114,7 @@
 {
     //
     // Start falling if not already
-    if (!self.falling) {
+    if (!self.falling && !self.landed) {
         self.falling = YES;
         self.spawnGoTime = true;
         
@@ -119,16 +147,19 @@
 
 - (void)update:(CFTimeInterval)currentTime
 {
+    if (self.falling) {
+        // Count the time
+        [self _countTimeBasedOnCurrentTime:currentTime];
+        
+        // Spawn monster if needed
+        [self _spawnMonsterIfNeeded];
+        
+        // Update monsters rotations
+        [self _updateMonstersRotations];
+    }
+    
     // Update parallax backgrounds
     [self.parallaxBackgroundNode update:currentTime];
-    
-    //
-    // Spawn monster if needed
-    [self _spawnMonsterIfNeeded];
-    
-    //
-    // Update monsters rotations
-    [self _updateMonstersRotations];
 }
 
 
@@ -136,15 +167,42 @@
 
 - (void)_startFalling
 {
-    //
     // Move foreign planet out from the scene by translating it upwards
-    [self.foreignPlanetNode moveUp];
+    [self.foreignPlanetNode moveUpByDistance:CGRectGetHeight(self.foreignPlanetNode.frame) duration:4.0f];
     
     //
     // Descent main character to falling position
     CGFloat characterCurrentVerticalPosition = self.characterNode.position.y;
     CGFloat characterDescentDistance = characterCurrentVerticalPosition - (CGRectGetHeight(self.frame) * 0.75f);
     [self.characterNode prepareForFallingWithDescentByDistance:characterDescentDistance];
+    
+    // Speed up the parallax background
+    [self.parallaxBackgroundNode changeSpeedsByFactor:6.0f];
+}
+
+
+- (void)_land
+{
+    // Mark landed
+    self.landed = YES;
+    
+    // Stop falling
+    self.falling = NO;
+    
+    // Stop spawning monsters
+    self.spawnGoTime = NO;
+    
+    // Move foreign planet out from the scene by translating it upwards
+    [self.homePlanetNode moveUpByDistance:CGRectGetHeight(self.homePlanetNode.frame) duration:1.2f];
+    
+    //
+    // Descent main character to falling position
+    CGFloat characterCurrentVerticalPosition = self.characterNode.position.y;
+    CGFloat characterDescentDistance = characterCurrentVerticalPosition - (CGRectGetHeight(self.frame) * 0.2f);
+    [self.characterNode prepareForLandingWithDescentByDistance:characterDescentDistance];
+    
+    // Slow down the parallax background
+    [self.parallaxBackgroundNode changeSpeedsByFactor:0.1f];
 }
 
 
@@ -258,7 +316,30 @@
     CGFloat opposite = positionA.y - positionB.y;
     CGFloat adjacent = fabs(positionA.x - positionB.x);
     CGFloat alphaAngle = atanf(opposite / adjacent);
-    return SK_DEGREES_TO_RADIANS(90.0f) - alphaAngle;
+    return DegreesToRadians(90.0f) - alphaAngle;
+}
+
+
+- (void)_countTimeBasedOnCurrentTime:(CFTimeInterval)currentTime
+{
+    // Handle time delta - If frames drop below 60fps
+    CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval;
+    self.lastUpdateTimeInterval = currentTime;
+    if (timeSinceLast > 1) { // more than a second has passed since the last update
+        timeSinceLast = 1.0 / 60.0;
+        self.lastUpdateTimeInterval = currentTime;
+    }
+    
+    self.lastCheckTimeInterval += timeSinceLast;
+    if (self.lastCheckTimeInterval > 1) {
+        self.lastCheckTimeInterval = 0;
+        self.totalTimePassed++;
+    }
+    
+    // End game if a certain time period has passed
+    if (self.totalTimePassed > kDurationOfLevelInSeconds) {
+        [self _land];
+    }
 }
 
 @end

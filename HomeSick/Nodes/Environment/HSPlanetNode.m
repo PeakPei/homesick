@@ -10,17 +10,11 @@
 
 @implementation HSPlanetNode
 
-- (void)moveUp
+- (void)moveUpByDistance:(CGFloat)distance duration:(CGFloat)duration
 {
-    SKAction *moveUpAction = [SKAction moveByX:0.0 y:CGRectGetHeight(self.frame) duration:4.0f];
+    SKAction *moveUpAction = [SKAction moveByX:0.0 y:distance duration:duration];
+    moveUpAction.timingMode = SKActionTimingEaseOut;
     [self runAction:moveUpAction];
-}
-
-
-- (void)moveDown
-{
-    SKAction *moveDownAction = [SKAction moveByX:0.0 y:-CGRectGetHeight(self.frame) duration:4.0f];
-    [self runAction:moveDownAction];
 }
 
 @end

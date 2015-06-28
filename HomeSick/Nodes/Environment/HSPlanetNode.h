@@ -11,13 +11,8 @@
 @interface HSPlanetNode : SKShapeNode
 
 /**
- Moves the planet up
+ Moves the planet up by a given distance and duration
  */
-- (void)moveUp;
-
-/**
- Moves the planet down
- */
-- (void)moveDown;
+- (void)moveUpByDistance:(CGFloat)distance duration:(CGFloat)duration;
 
 @end

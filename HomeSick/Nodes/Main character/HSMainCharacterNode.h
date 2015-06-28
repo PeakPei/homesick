@@ -12,5 +12,6 @@
 
 - (instancetype)initWithSceneSize:(CGRect)sceneSize;
 - (void)prepareForFallingWithDescentByDistance:(CGFloat)distance;
+- (void)prepareForLandingWithDescentByDistance:(CGFloat)distance;
 
 @end
