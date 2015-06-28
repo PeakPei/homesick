@@ -10,6 +10,7 @@
 		1C52CBF41B3FF27C007F6567 /* AngrySquare.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 1C52CBF31B3FF27C007F6567 /* AngrySquare.atlas */; };
 		1C52CBF61B3FFCD3007F6567 /* Character.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 1C52CBF51B3FFCD3007F6567 /* Character.atlas */; };
 		1CE6F38A1B3EEB5B002E2ADE /* Drone01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */; };
+		2691C4521B4015CE0051ABED /* HSProgressBarNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2691C4511B4015CE0051ABED /* HSProgressBarNode.m */; };
 		26C2E3BB1B3EB120007A95D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3BA1B3EB120007A95D2 /* main.m */; };
 		26C2E3BE1B3EB120007A95D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3BD1B3EB120007A95D2 /* AppDelegate.m */; };
 		26C2E3C11B3EB120007A95D2 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 26C2E3C01B3EB120007A95D2 /* GameScene.m */; };
@@ -40,6 +41,8 @@
 		1C52CBF31B3FF27C007F6567 /* AngrySquare.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = AngrySquare.atlas; sourceTree = "<group>"; };
 		1C52CBF51B3FFCD3007F6567 /* Character.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Character.atlas; sourceTree = "<group>"; };
 		1CE6F3891B3EEB5B002E2ADE /* Drone01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Drone01.mp3; sourceTree = "<group>"; };
+		2691C4501B4015CE0051ABED /* HSProgressBarNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HSProgressBarNode.h; path = HUD/HSProgressBarNode.h; sourceTree = "<group>"; };
+		2691C4511B4015CE0051ABED /* HSProgressBarNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HSProgressBarNode.m; path = HUD/HSProgressBarNode.m; sourceTree = "<group>"; };
 		26C2E3B51B3EB120007A95D2 /* HomeSick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeSick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26C2E3B91B3EB120007A95D2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		26C2E3BA1B3EB120007A95D2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -95,6 +98,15 @@
 			name = SoundFiles;
 			sourceTree = "<group>";
 		};
+		2691C44F1B4015A60051ABED /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+				2691C4501B4015CE0051ABED /* HSProgressBarNode.h */,
+				2691C4511B4015CE0051ABED /* HSProgressBarNode.m */,
+			);
+			name = HUD;
+			sourceTree = "<group>";
+		};
 		26C2E3AC1B3EB120007A95D2 = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +128,7 @@
 		26C2E3B71B3EB120007A95D2 /* HomeSick */ = {
 			isa = PBXGroup;
 			children = (
+				2691C44F1B4015A60051ABED /* HUD */,
 				1C52CBF51B3FFCD3007F6567 /* Character.atlas */,
 				1C52CBF31B3FF27C007F6567 /* AngrySquare.atlas */,
 				1CDADEF51B3EDB7100D032D1 /* SoundFiles */,
@@ -314,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2691C4521B4015CE0051ABED /* HSProgressBarNode.m in Sources */,
 				26C2E3F91B3EBFB6007A95D2 /* HSObstacleNode.m in Sources */,
 				26C2E4001B3ECEAE007A95D2 /* UIColor+HSAdditions.m in Sources */,
 				26C2E3F41B3EBF9B007A95D2 /* HSPlanetNode.m in Sources */,

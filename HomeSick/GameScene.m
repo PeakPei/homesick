@@ -12,6 +12,7 @@
 #import "HSPlanetNode.h"
 #import "HSMainCharacterNode.h"
 #import "PBParallaxScrolling.h"
+#import "HSProgressBarNode.h"
 
 #import "UIColor+HSAdditions.h"
 
@@ -27,7 +28,7 @@ static inline CGFloat DegreesToRadians(CGFloat angle)
 //}
 
 
-static CGFloat const kDurationOfLevelInSeconds = 10.0f;
+static CGFloat const kDurationOfLevelInSeconds = 30.0f;
 
 @interface GameScene()
 
@@ -37,6 +38,7 @@ static CGFloat const kDurationOfLevelInSeconds = 10.0f;
 @property (nonatomic, weak) HSPlanetNode *foreignPlanetNode;
 @property (nonatomic, weak) HSPlanetNode *homePlanetNode;
 @property (nonatomic, weak) HSMainCharacterNode *characterNode;
+@property (nonatomic, weak) HSProgressBarNode *progressBarNode;
 
 @property (nonatomic, strong) NSMutableArray *monsters;
 
@@ -63,7 +65,7 @@ static CGFloat const kDurationOfLevelInSeconds = 10.0f;
     
     //
     // Add background paralax node
-    HSBackgroundNode *colorBackgroundNode = [HSBackgroundNode spriteNodeWithColor:[UIColor hs_colorFromHexString:@"071d33"] size:self.frame.size];
+    HSBackgroundNode *colorBackgroundNode = [HSBackgroundNode spriteNodeWithColor:[UIColor hs_colorFromHexString:@"182833"] size:self.frame.size];
     NSArray * imageNames = @[@"bg2", @"bg3", colorBackgroundNode];
     PBParallaxScrolling *parallaxBackgroundNode = [[PBParallaxScrolling alloc] initWithBackgrounds:imageNames size:self.frame.size direction:kPBParallaxBackgroundDirectionUp fastestSpeed:3.0f andSpeedDecrease:kPBParallaxBackgroundDefaultSpeedDifferential];
     parallaxBackgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
@@ -98,11 +100,20 @@ static CGFloat const kDurationOfLevelInSeconds = 10.0f;
     [self addChild:characterNode];
     self.characterNode = characterNode;
     
-    self.waitForSpawnAction = [SKAction waitForDuration:0.8f];
+    self.waitForSpawnAction = [SKAction waitForDuration:1.0f];
 
     //
-    // Initialize array to hold monsters
+    // Initialize an array to hold monsters
     self.monsters = [[NSMutableArray alloc] init];
+    
+    //
+    // Create and add progress bar node
+    HSProgressBarNode *progressBarNode = [[HSProgressBarNode alloc] initWithColor:UIColor.clearColor size:CGSizeMake(CGRectGetWidth(self.frame) * 0.08f, CGRectGetHeight(self.frame) - 20.0f)];
+    progressBarNode.anchorPoint = CGPointMake(0.0f, 0.5f);
+    progressBarNode.position = CGPointMake(10.0f, CGRectGetMidY(self.frame));
+    progressBarNode.alpha = 0.0f;
+    [self addChild:progressBarNode];
+    self.progressBarNode = progressBarNode;
 }
 
 
@@ -146,6 +157,9 @@ static CGFloat const kDurationOfLevelInSeconds = 10.0f;
         
         // Update monsters rotations
         [self _updateMonstersRotations];
+        
+        // Update progress bar
+        [self _updateProgressBar];
     }
     
     // Update parallax backgrounds
@@ -168,6 +182,9 @@ static CGFloat const kDurationOfLevelInSeconds = 10.0f;
     
     // Speed up the parallax background
     [self.parallaxBackgroundNode changeSpeedsByFactor:6.0f];
+    
+    // Fade in progress bar
+    [self.progressBarNode fadeIn];
 }
 
 
@@ -193,6 +210,9 @@ static CGFloat const kDurationOfLevelInSeconds = 10.0f;
     
     // Slow down the parallax background
     [self.parallaxBackgroundNode changeSpeedsByFactor:0.1f];
+    
+    // Fade out progress bar
+    [self.progressBarNode fadeOut];
 }
 
 
@@ -261,6 +281,13 @@ static CGFloat const kDurationOfLevelInSeconds = 10.0f;
         // Rotate the monster
         monster.zRotation = rotationAngle;
     }
+}
+
+
+- (void)_updateProgressBar
+{
+    CGFloat progressFactor = self.totalTimePassed / kDurationOfLevelInSeconds;
+    [self.progressBarNode repositionCharacterNodeForProgress:progressFactor];
 }
 
 
